@@ -9,9 +9,8 @@ __pycache__/
 # Django
 *.log
 db.sqlite3
-
-# Environment
 .env
+
 
 # Docker
 postgres_data/
