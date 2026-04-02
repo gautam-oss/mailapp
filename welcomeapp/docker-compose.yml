@@ -1,0 +1,16 @@
+services:
+  db:
+    image: postgres:16
+    container_name: welcomeapp_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: welcomeapp_db
+      POSTGRES_USER: welcomeapp_user
+      POSTGRES_PASSWORD: strongpassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
