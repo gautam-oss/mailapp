@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Log in — MailApp{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1 class="card-title">Welcome back</h1>
+  <p class="card-sub">Log in to compose and send emails.</p>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% for error in field.errors %}
+          <div class="field-error">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+        <div class="field-error" style="margin-bottom:1rem;">{{ error }}</div>
+      {% endfor %}
+    {% endif %}
+
+    <button class="btn btn-full" type="submit">Log in</button>
+  </form>
+
+  <p class="alt-link">No account yet? <a href="{% url 'register' %}">Register</a></p>
+</div>
+{% endblock %}

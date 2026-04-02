@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Register — MailApp{% endblock %}
+
+{% block content %}
+<div class="card">
+  <h1 class="card-title">Create account</h1>
+  <p class="card-sub">Send emails from your browser, securely.</p>
+
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.help_text %}
+          <div class="helptext">{{ field.help_text }}</div>
+        {% endif %}
+        {% for error in field.errors %}
+          <div class="field-error">{{ error }}</div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+    <button class="btn btn-full" type="submit">Create account</button>
+  </form>
+
+  <p class="alt-link">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+</div>
+{% endblock %}

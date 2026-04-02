@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}MailApp{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,500;1,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f0e8;
+      --surface: #fdfaf4;
+      --ink: #1a1612;
+      --ink-muted: #6b6256;
+      --accent: #c0392b;
+      --accent-light: #f9edeb;
+      --border: #e0d8cc;
+      --radius: 6px;
+      --shadow: 0 2px 12px rgba(26,22,18,.08);
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .nav-brand {
+      font-family: 'Fraunces', serif;
+      font-weight: 500;
+      font-size: 1.3rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand span { color: var(--accent); }
+
+    .nav-links { display: flex; gap: 0.5rem; align-items: center; }
+
+    .nav-links a, .nav-links button {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--ink-muted);
+      text-decoration: none;
+      padding: 0.4rem 0.85rem;
+      border-radius: var(--radius);
+      border: none;
+      background: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-links a:hover, .nav-links button:hover {
+      background: var(--border);
+      color: var(--ink);
+    }
+
+    .nav-links a.active {
+      background: var(--accent-light);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* MAIN */
+    main {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 3rem 1.5rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      padding: 2.5rem;
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .card-wide { max-width: 720px; }
+
+    .card-title {
+      font-family: 'Fraunces', serif;
+      font-size: 1.75rem;
+      font-weight: 300;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.03em;
+    }
+
+    .card-sub {
+      font-size: 0.875rem;
+      color: var(--ink-muted);
+      margin-bottom: 2rem;
+    }
+
+    /* MESSAGES */
+    .messages { list-style: none; margin-bottom: 1.25rem; }
+
+    .messages li {
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .messages .success { background: #eaf4ee; color: #2d6a4f; border: 1px solid #b7dfc6; }
+    .messages .error   { background: var(--accent-light); color: var(--accent); border: 1px solid #f5c6c2; }
+    .messages .info    { background: #eaf0fb; color: #2c4a8e; border: 1px solid #c0d0f0; }
+
+    /* FORMS */
+    .form-group { margin-bottom: 1.25rem; }
+
+    label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(192,57,43,.12);
+    }
+
+    textarea { resize: vertical; min-height: 160px; }
+
+    .field-error {
+      font-size: 0.78rem;
+      color: var(--accent);
+      margin-top: 0.3rem;
+    }
+
+    .helptext {
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* BUTTON */
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 1.6rem;
+      background: var(--ink);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn:hover { background: var(--accent); }
+    .btn:active { transform: scale(0.98); }
+    .btn-full { width: 100%; text-align: center; }
+
+    /* TABLE */
+    table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    th {
+      text-align: left;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      padding: 0 0.75rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 0.85rem 0.75rem;
+      border-bottom: 1px solid var(--border);
+      color: var(--ink);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--bg); }
+
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.55rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+    .badge-ok  { background: #eaf4ee; color: #2d6a4f; }
+    .badge-err { background: var(--accent-light); color: var(--accent); }
+
+    .alt-link { text-align: center; margin-top: 1.5rem; font-size: 0.875rem; color: var(--ink-muted); }
+    .alt-link a { color: var(--accent); font-weight: 500; text-decoration: none; }
+
+    .empty { text-align: center; padding: 3rem 0; color: var(--ink-muted); font-size: 0.9rem; }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      font-size: 0.78rem;
+      color: var(--ink-muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="/">Mail<span>App</span></a>
+  <div class="nav-links">
+    {% if user.is_authenticated %}
+      <a href="{% url 'compose' %}" {% if request.resolver_match.url_name == 'compose' %}class="active"{% endif %}>Compose</a>
+      <a href="{% url 'sent' %}" {% if request.resolver_match.url_name == 'sent' %}class="active"{% endif %}>Sent</a>
+      <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit">Log out</button>
+      </form>
+    {% else %}
+      <a href="{% url 'login' %}">Log in</a>
+      <a href="{% url 'register' %}">Register</a>
+    {% endif %}
+  </div>
+</nav>
+
+<main>
+  <div>
+    {% if messages %}
+      <ul class="messages" style="max-width:720px;margin:0 auto 1rem;">
+        {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    {% block content %}{% endblock %}
+  </div>
+</main>
+
+<footer>MailApp &mdash; Django + PostgreSQL</footer>
+
+</body>
+</html>

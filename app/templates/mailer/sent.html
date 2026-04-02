@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Sent — MailApp{% endblock %}
+
+{% block content %}
+<div class="card card-wide">
+  <h1 class="card-title">Sent mail</h1>
+  <p class="card-sub">{{ emails.count }} email{{ emails.count|pluralize }} sent by you.</p>
+
+  {% if emails %}
+    <table>
+      <thead>
+        <tr>
+          <th>To</th>
+          <th>Subject</th>
+          <th>Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for email in emails %}
+        <tr>
+          <td>{{ email.recipient }}</td>
+          <td>{{ email.subject }}</td>
+          <td>{{ email.sent_at|date:"M j, Y · H:i" }}</td>
+          <td>
+            {% if email.success %}
+              <span class="badge badge-ok">Sent</span>
+            {% else %}
+              <span class="badge badge-err">Failed</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="empty">No emails sent yet. <a href="{% url 'compose' %}" style="color:var(--accent);">Compose one &rarr;</a></div>
+  {% endif %}
+</div>
+{% endblock %}
